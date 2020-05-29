@@ -25,8 +25,11 @@ func main() {
 	// Initialise service
 	service.Init()
 
+	repo := &handler.Repository{}
+
 	// Register Handler
-	consignment.RegisterShippingServiceHandler(service.Server(), new(handler.Consignment))
+	//consignment.RegisterShippingServiceHandler(service.Server(), new(handler.Consignment{repo}))
+	consignment.RegisterShippingServiceHandler(service.Server(), &handler.Consignment{Repo: repo})
 
 	// Register Struct as Subscriber
 	micro.RegisterSubscriber("com.foo.service.consignment", service.Server(), new(subscriber.Consignment))

@@ -32,14 +32,14 @@ func (repo *Repository) GetAll() []*consignment.Consignment {
 
 // Consignment - Struct
 type Consignment struct {
-	repo repository
+	Repo repository
 }
 
 // CreateConsignment - Handled by the gRPC server
 func (e *Consignment) CreateConsignment(ctx context.Context, req *consignment.Consignment, rsp *consignment.Response) error {
 	log.Info("Received Consignment.CreateConsignment request")
 
-	consignment, err := e.repo.Create(req)
+	consignment, err := e.Repo.Create(req)
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,8 @@ func (e *Consignment) CreateConsignment(ctx context.Context, req *consignment.Co
 
 // GetConsignments - Get all consignments from datastore
 func (e *Consignment) GetConsignments(ctx context.Context, req *consignment.GetRequest, rsp *consignment.Response) error {
-	consignments := e.repo.GetAll()
+	log.Info("Received Consignment.GetConsignments request")
+	consignments := e.Repo.GetAll()
 	rsp.Consignments = consignments
 
 	return nil
