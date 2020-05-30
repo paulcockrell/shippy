@@ -1,19 +1,16 @@
 package main
 
 import (
-	"consignment/handler"
-	"consignment/subscriber"
+	"github.com/paulcockrell/shippy/services/consignment/handler"
+	"github.com/paulcockrell/shippy/services/consignment/subscriber"
 
 	"github.com/micro/go-micro/v2"
 	log "github.com/micro/go-micro/v2/logger"
 
-	consignment "consignment/proto/consignment"
-)
+	consignment "github.com/paulcockrell/shippy/services/consignment/proto/consignment"
 
-type repository interface {
-	Create(consignment.Consignment) (*consignment.Consignment, error)
-	GetAll() []*consignment.Consignment
-}
+	vesselProto "github.com/paulcockrell/shippy/services/vessel/proto/vessel"
+)
 
 func main() {
 	// New Service
@@ -29,7 +26,7 @@ func main() {
 
 	// Register Handler
 	//consignment.RegisterShippingServiceHandler(service.Server(), new(handler.Consignment{repo}))
-	consignment.RegisterShippingServiceHandler(service.Server(), &handler.Consignment{Repo: repo})
+	consignment.RegisterShippingServiceHandler(service.Server(), &handler.Consignment{Repo: repo, VesselClient: vesselProto.VesselServiceClient})
 
 	// Register Struct as Subscriber
 	micro.RegisterSubscriber("com.foo.service.consignment", service.Server(), new(subscriber.Consignment))

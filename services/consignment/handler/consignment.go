@@ -5,7 +5,9 @@ import (
 
 	log "github.com/micro/go-micro/v2/logger"
 
-	consignment "consignment/proto/consignment"
+	consignment "github.com/paulcockrell/shippy/services/consignment/proto/consignment"
+
+	vesselProto "github.com/paulcockrell/shippy/services/vessel/proto/vessel"
 )
 
 type repository interface {
@@ -32,12 +34,24 @@ func (repo *Repository) GetAll() []*consignment.Consignment {
 
 // Consignment - Struct
 type Consignment struct {
-	Repo repository
+	Repo         repository
+	VesselClient vesselProto.VesselServiceClient
 }
 
 // CreateConsignment - Handled by the gRPC server
 func (e *Consignment) CreateConsignment(ctx context.Context, req *consignment.Consignment, rsp *consignment.Response) error {
 	log.Info("Received Consignment.CreateConsignment request")
+
+	vesselResponse, err := e.VesselClient.FindAvailable(context.Background(), &vesselProto.Specification{
+		MaxWeight: req.Weight,
+		Capacity:  int32(len(req.Containers)),
+	})
+	log.Info("Found vessel %s\n", vesselResponse.Vessel.Name)
+	if err != nil {
+		return err
+	}
+
+	req.VesselId = vesselResponse.Vessel.Id
 
 	consignment, err := e.Repo.Create(req)
 	if err != nil {
@@ -58,43 +72,3 @@ func (e *Consignment) GetConsignments(ctx context.Context, req *consignment.GetR
 
 	return nil
 }
-
-/*
-// Call is a single request handler called via client.Call or the generated client code
-func (e *Consignment) Call(ctx context.Context, req *consignment.Request, rsp *consignment.Response) error {
-	log.Info("Received Consignment.Call request")
-	rsp.Msg = "Hello " + req.Name
-	return nil
-}
-
-// Stream is a server side stream handler called via client.Stream or the generated client code
-func (e *Consignment) Stream(ctx context.Context, req *consignment.StreamingRequest, stream consignment.Consignment_StreamStream) error {
-	log.Infof("Received Consignment.Stream request with count: %d", req.Count)
-
-	for i := 0; i < int(req.Count); i++ {
-		log.Infof("Responding: %d", i)
-		if err := stream.Send(&consignment.StreamingResponse{
-			Count: int64(i),
-		}); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-// PingPong is a bidirectional stream handler called via client.Stream or the generated client code
-func (e *Consignment) PingPong(ctx context.Context, stream consignment.Consignment_PingPongStream) error {
-	for {
-		req, err := stream.Recv()
-		if err != nil {
-			return err
-		}
-		log.Infof("Got ping %v", req.Stroke)
-		if err := stream.Send(&consignment.Pong{Stroke: req.Stroke}); err != nil {
-			return err
-		}
-	}
-}
-
-*/

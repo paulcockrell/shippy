@@ -1,4 +1,4 @@
-module consignment
+module github.com/paulcockrell/shippy/services/consignment
 
 go 1.14
 
