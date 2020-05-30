@@ -49,6 +49,7 @@ func (e *Consignment) CreateConsignment(ctx context.Context, req *consignment.Co
 // GetConsignments - Get all consignments from datastore
 func (e *Consignment) GetConsignments(ctx context.Context, req *consignment.GetRequest, rsp *consignment.Response) error {
 	log.Info("Received Consignment.GetConsignments request")
+
 	consignments, err := e.Repository.GetAll(ctx)
 	if err != nil {
 		return err
