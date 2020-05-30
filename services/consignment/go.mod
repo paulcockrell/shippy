@@ -7,6 +7,7 @@ require (
 	github.com/golang/protobuf v1.4.1
 	github.com/grpc-ecosystem/grpc-gateway v1.14.5
 	github.com/micro/go-micro/v2 v2.6.0
+	github.com/paulcockrell/shippy/services/vessel v0.0.0-20200530091352-2293e3c27364
 	go.etcd.io/etcd v3.3.22+incompatible
 	google.golang.org/grpc v1.26.0
 	google.golang.org/protobuf v1.22.0

@@ -5,7 +5,7 @@ import (
 
 	log "github.com/micro/go-micro/v2/logger"
 
-	consignment "consignment/proto/consignment"
+	consignment "github.com/paulcockrell/shippy/services/consignment/proto/consignment"
 )
 
 type Consignment struct{}

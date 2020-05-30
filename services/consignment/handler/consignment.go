@@ -35,7 +35,7 @@ func (repo *Repository) GetAll() []*consignment.Consignment {
 // Consignment - Struct
 type Consignment struct {
 	Repo         repository
-	VesselClient vesselProto.VesselServiceClient
+	VesselClient vesselProto.VesselService
 }
 
 // CreateConsignment - Handled by the gRPC server

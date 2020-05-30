@@ -303,7 +303,10 @@ github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c/go.mod h1:X07ZCGwU
 github.com/patrickmn/go-cache v2.1.0+incompatible h1:HRMgzkcYKYpi3C8ajMPV8OFXaaRUnok+kx1WdO15EQc=
 github.com/patrickmn/go-cache v2.1.0+incompatible/go.mod h1:3Qf8kWWT7OJRJbdiICTKqZju1ZixQ/KpMGzzAfe6+WQ=
 github.com/paulcockrell/shippy v0.0.0-20200530085011-bf8690b6766c h1:srG25LlEc4UWR1B8EJKmzp00PrTYymNo6AKMhj0ntGQ=
+github.com/paulcockrell/shippy v0.0.0-20200530091352-2293e3c27364 h1:446Nbbicng6IRXVMZRIWOXXBWnKk75kzB+4qCkosHXA=
 github.com/paulcockrell/shippy/services/vessel v0.0.0-20200530085011-bf8690b6766c h1:T61ReRPc3neHbv5KaQo426KsGzFNoHDigAZ/4rh9gYE=
+github.com/paulcockrell/shippy/services/vessel v0.0.0-20200530091352-2293e3c27364 h1:6Zo6TeSG+8XZxPECSKEe9tER4OwnmVInGPiHkl7+NB0=
+github.com/paulcockrell/shippy/services/vessel v0.0.0-20200530091352-2293e3c27364/go.mod h1:d5GLm4F5BKIOoUZRzidlT8uV+MSVg2tUYjCXBJIQXUE=
 github.com/pelletier/go-buffruneio v0.2.0/go.mod h1:JkE26KsDizTr40EUHkXVtNPvgGtbSNq5BcowyYOWdKo=
 github.com/pierrec/lz4 v2.0.5+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi+IEE17M5jbnwPHcY=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
