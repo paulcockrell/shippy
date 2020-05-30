@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	vessel "vessel/proto/vessel"
+	vessel "github.com/paulcockrell/shippy/services/vessel/proto/vessel"
 )
 
 type repository interface {

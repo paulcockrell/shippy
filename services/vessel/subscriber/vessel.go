@@ -5,7 +5,7 @@ import (
 
 	log "github.com/micro/go-micro/v2/logger"
 
-	vessel "vessel/proto/vessel"
+	vessel "github.com/paulcockrell/shippy/services/vessel/proto/vessel"
 )
 
 type Vessel struct{}

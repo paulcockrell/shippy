@@ -1,13 +1,13 @@
 package main
 
 import (
-	"vessel/handler"
-	"vessel/subscriber"
+	"github.com/paulcockrell/shippy/services/vessel/handler"
+	"github.com/paulcockrell/shippy/services/vessel/subscriber"
 
 	"github.com/micro/go-micro/v2"
 	log "github.com/micro/go-micro/v2/logger"
 
-	vessel "vessel/proto/vessel"
+	vessel "github.com/paulcockrell/shippy/services/vessel/proto/vessel"
 )
 
 func main() {
