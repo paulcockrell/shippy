@@ -1,4 +1,4 @@
-module vessel
+module github.com/paulcockrell/shippy/services/vessel
 
 go 1.14
 
