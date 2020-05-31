@@ -4,6 +4,8 @@ package go.micro.service.vessel;
 
 service VesselService {
 	rpc FindAvailable(Specification) returns (Response) {}
+	rpc Create(Vessel) returns (Response) {}
+	rpc GetVessels(GetRequest) returns (Response) {}
 }
 
 message Vessel {
@@ -20,7 +22,10 @@ message Specification {
 	int32 max_weight = 2;
 }
 
+message GetRequest {}
+
 message Response {
 	Vessel vessel = 1;
 	repeated Vessel vessels = 2;
+	bool created = 3;
 }

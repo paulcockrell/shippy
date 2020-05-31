@@ -1,7 +1,11 @@
 package main
 
 import (
+	"context"
+	"os"
+
 	"github.com/paulcockrell/shippy/services/vessel/handler"
+	"github.com/paulcockrell/shippy/services/vessel/repository"
 	"github.com/paulcockrell/shippy/services/vessel/subscriber"
 
 	"github.com/micro/go-micro/v2"
@@ -10,27 +14,41 @@ import (
 	vessel "github.com/paulcockrell/shippy/services/vessel/proto/vessel"
 )
 
+const (
+	defaultHost = "mongodb://localhost:27017"
+)
+
 func main() {
+	/*** Setup DB ***/
+
+	uri := os.Getenv("DB_HOST")
+	if uri == "" {
+		uri = defaultHost
+	}
+
+	client, err := CreateClient(context.Background(), uri, 0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer client.Disconnect(context.Background())
+
+	vesselCollection := client.Database("shippy").Collection("vessels")
+	repo := &repository.MongoRepository{Collection: vesselCollection}
+
+	/*** Setup Service ***/
+
 	// New Service
 	service := micro.NewService(
 		micro.Name("com.foo.service.vessel"),
 		micro.Version("latest"),
 	)
 
-	// Lets add some data to the vessel repo
-	vessels := []*vessel.Vessel{
-		{
-			Id: "vessel001", Name: "Boaty McBoatFace",
-			MaxWeight: 200000, Capacity: 500,
-		},
-	}
-	repo := &handler.Repository{Vessels: vessels}
-
 	// Initialise service
 	service.Init()
 
 	// Register Handler
-	vessel.RegisterVesselServiceHandler(service.Server(), &handler.Vessel{Repo: repo})
+	h := &handler.Vessel{Repository: repo}
+	vessel.RegisterVesselServiceHandler(service.Server(), h)
 
 	// Register Struct as Subscriber
 	micro.RegisterSubscriber("com.foo.service.vessel", service.Server(), new(subscriber.Vessel))

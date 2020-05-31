@@ -8,6 +8,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.14.5
 	github.com/micro/go-micro/v2 v2.6.0
 	go.etcd.io/etcd v3.3.22+incompatible
+	go.mongodb.org/mongo-driver v1.3.3
 	google.golang.org/grpc v1.26.0
 	google.golang.org/protobuf v1.22.0
 )
