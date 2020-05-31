@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	defaultHost = "localhost:27017"
+	defaultHost = "mongodb://localhost:27017"
 )
 
 func main() {
@@ -51,7 +51,6 @@ func main() {
 	service.Init()
 
 	// Register Handler
-	//consignment.RegisterShippingServiceHandler(service.Server(), new(handler.Consignment{repo}))
 	vesselClient := vesselProto.NewVesselService("com.foo.service.vessel", service.Client())
 	h := &handler.Consignment{Repository: repo, VesselClient: vesselClient}
 	consignment.RegisterShippingServiceHandler(service.Server(), h)
