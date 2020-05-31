@@ -3,6 +3,8 @@
 Go lang microservices project for shipping containers
 
 ## Prerequisits
+Install:
+1. MongoDB
 
 ## Development
 Use the make file for common tasks
