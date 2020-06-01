@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+    datastore:
+      image: mongo
+      ports:
+        - 27017:27017
+
+    database:
+      image: postgres
+      ports:
+        - 5433:5432
+      environment:
+        POSTGRES_DB: shippy
+        POSTGRES_USER: admin
+        POSTGRES_PASSWORD: admin
