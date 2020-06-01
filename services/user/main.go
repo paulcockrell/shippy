@@ -1,18 +1,28 @@
 package main
 
 import (
-	log "github.com/micro/go-micro/v2/logger"
 	"github.com/micro/go-micro/v2"
-	"user/handler"
-	"user/subscriber"
+	log "github.com/micro/go-micro/v2/logger"
 
-	user "user/proto/user"
+	"github.com/paulcockrell/shippy/services/user/handler"
+	user "github.com/paulcockrell/shippy/services/user/proto/user"
+	repository "github.com/paulcockrell/shippy/services/user/repository"
 )
 
 func main() {
+	db, err := CreateConnection()
+	if err != nil {
+		log.Fatalf("Could not connect to DB: %v", err)
+	}
+
+	defer db.Close()
+
+	db.AutoMigrate(&user.User{})
+	repository := &repository.UserRepository{db}
+
 	// New Service
 	service := micro.NewService(
-		micro.Name("go.micro.service.user"),
+		micro.Name("com.foo.service.user"),
 		micro.Version("latest"),
 	)
 
@@ -20,10 +30,7 @@ func main() {
 	service.Init()
 
 	// Register Handler
-	user.RegisterUserHandler(service.Server(), new(handler.User))
-
-	// Register Struct as Subscriber
-	micro.RegisterSubscriber("go.micro.service.user", service.Server(), new(subscriber.User))
+	user.RegisterUserServiceHandler(service.Server(), &handler.User{repository})
 
 	// Run service
 	if err := service.Run(); err != nil {

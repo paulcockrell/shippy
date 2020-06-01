@@ -5,44 +5,63 @@ import (
 
 	log "github.com/micro/go-micro/v2/logger"
 
-	user "user/proto/user"
+	user "github.com/paulcockrell/shippy/services/user/proto/user"
+	repository "github.com/paulcockrell/shippy/services/user/repository"
 )
 
-type User struct{}
-
-// Call is a single request handler called via client.Call or the generated client code
-func (e *User) Call(ctx context.Context, req *user.Request, rsp *user.Response) error {
-	log.Info("Received User.Call request")
-	rsp.Msg = "Hello " + req.Name
-	return nil
+// User -
+type User struct {
+	Repository repository.Repository
 }
 
-// Stream is a server side stream handler called via client.Stream or the generated client code
-func (e *User) Stream(ctx context.Context, req *user.StreamingRequest, stream user.User_StreamStream) error {
-	log.Infof("Received User.Stream request with count: %d", req.Count)
-
-	for i := 0; i < int(req.Count); i++ {
-		log.Infof("Responding: %d", i)
-		if err := stream.Send(&user.StreamingResponse{
-			Count: int64(i),
-		}); err != nil {
-			return err
-		}
+// GetAll -
+func (e *User) GetAll(ctx context.Context, req *user.Request, rsp *user.Response) error {
+	users, err := e.Repository.GetAll(ctx)
+	if err != nil {
+		return err
 	}
+
+	rsp.Users = users
 
 	return nil
 }
 
-// PingPong is a bidirectional stream handler called via client.Stream or the generated client code
-func (e *User) PingPong(ctx context.Context, stream user.User_PingPongStream) error {
-	for {
-		req, err := stream.Recv()
-		if err != nil {
-			return err
-		}
-		log.Infof("Got ping %v", req.Stroke)
-		if err := stream.Send(&user.Pong{Stroke: req.Stroke}); err != nil {
-			return err
-		}
+// Get -
+func (e *User) Get(ctx context.Context, req *user.User, rsp *user.Response) error {
+	log.Info("Received User.Get request")
+
+	user, err := e.Repository.Get(ctx, req.Id)
+	if err != nil {
+		return err
 	}
+	rsp.User = user
+	return nil
+}
+
+// Auth -
+func (e *User) Auth(ctx context.Context, req *user.User, rsp *user.Token) error {
+	_ /*user*/, err := e.Repository.GetByEmailAndPassword(req)
+	if err != nil {
+		return err
+	}
+
+	rsp.Token = "testingabc"
+
+	return nil
+}
+
+// Create -
+func (e *User) Create(ctx context.Context, req *user.User, rsp *user.Response) error {
+	if err := e.Repository.Create(req); err != nil {
+		return err
+	}
+
+	rsp.User = req
+
+	return nil
+}
+
+// ValidateToken -
+func (e *User) ValidateToken(ctx context.Context, req *user.Token, rsp *user.Token) error {
+	return nil
 }
