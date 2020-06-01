@@ -7,6 +7,6 @@ import (
 
 // BeforeCreate - Generate UUID in place of auto-incrementing DB ID column value
 func (model *User) BeforeCreate(scope *gorm.Scope) error {
-	uuidGen := uuid.NewV4()
+	uuidGen := uuid.NewV4().String()
 	return scope.SetColumn("id", uuidGen)
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/jinzhu/gorm"
+	log "github.com/micro/go-micro/v2/logger"
 	user "github.com/paulcockrell/shippy/services/user/proto/user"
 )
 
@@ -52,6 +53,7 @@ func (r *UserRepository) GetByEmailAndPassword(user *user.User) (*user.User, err
 
 // Create -
 func (r *UserRepository) Create(user *user.User) error {
+	log.Info("Create user", user)
 	err := r.Db.Create(user).Error
 	return err
 }
