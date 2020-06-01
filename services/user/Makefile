@@ -4,14 +4,11 @@ MODIFY=Mgithub.com/micro/go-micro/api/proto/api.proto=github.com/micro/go-micro/
 
 .PHONY: proto
 proto:
-    
 	protoc --proto_path=. --micro_out=${MODIFY}:. --go_out=${MODIFY}:. proto/user/user.proto
-    
 
 .PHONY: build
 build: proto
-
-	go build -o user-service *.go
+	CGO_ENABLED=0 go build -o user-service *.go
 
 .PHONY: test
 test:

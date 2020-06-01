@@ -10,8 +10,7 @@ proto:
 
 .PHONY: build
 build: proto
-
-	go build -o vessel-service *.go
+	CGO_ENABLED=0 go build -o vessel-service *.go
 
 .PHONY: test
 test:

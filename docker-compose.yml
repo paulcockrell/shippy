@@ -1,28 +1,63 @@
-version: '3.1'
+version: '3.3'
 
 services:
+  consignment:
+    build: ./services/consignment
+    image: consignment-service:latest
+    ports:
+      - 50051:50051
+    environment:
+      MICRO_ADDRESS: ":50051"
+      MICRO_REGISTRY: "mdns"
+      DB_HOST: "mongodb://mongo:27017"
+      WAIT_HOSTS: mongo:27017
+    links:
+      - mongo
+    depends_on:
+      - mongo
+
+  vessel:
+    build: ./services/vessel
+    image: vessel-service:latest
+    ports:
+      - 50052:50051
+    environment:
+      MICRO_ADDRESS: ":50051"
+      MICRO_REGISTRY: "mdns"
+      DB_HOST: "mongodb://mongo:27017"
+      WAIT_HOSTS: mongo:27017
+    links:
+      - mongo
+    depends_on:
+      - mongo
+
   user:
-    build: services/user
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; ./user_service'
+    build: ./services/user
+    image: user-service:latest
     ports:
       - 50053:50051
     environment:
       MICRO_ADDRESS: ":50051"
       MICRO_REGISTRY: "mdns"
       DB_NAME: "postgres"
-      DB_HOST: "database"
+      DB_HOST: "postgres"
       DB_PORT: "5432"
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
+      WAIT_HOSTS: postgres:5432
+    links:
+      - postgres
     depends_on:
-      - database
+      - postgres
 
-  datastore:
+  mongo:
     image: mongo
     expose:
       - "27017"
+    volumes:
+      - ./data:/data/db
 
-  database:
+  postgres:
     image: postgres
     expose:
       - "5432"
@@ -30,3 +65,6 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
+volumes:
+  mongo_data:
