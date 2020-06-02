@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"errors"
 
 	log "github.com/micro/go-micro/v2/logger"
 	"golang.org/x/crypto/bcrypt"
@@ -82,5 +83,17 @@ func (e *User) Create(ctx context.Context, req *user.User, rsp *user.Response) e
 
 // ValidateToken -
 func (e *User) ValidateToken(ctx context.Context, req *user.Token, rsp *user.Token) error {
+	// Decode token
+	claims, err := e.TokenService.Decode(req.Token)
+	if err != nil {
+		return err
+	}
+
+	if claims.User.Id == "" {
+		return errors.New("invalid user")
+	}
+
+	rsp.Valid = true
+
 	return nil
 }

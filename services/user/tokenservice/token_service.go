@@ -32,16 +32,18 @@ type Authable interface {
 
 // Decode a token string into a token object
 func (e *TokenService) Decode(tokenString string) (*CustomClaims, error) {
+	claims := &CustomClaims{}
+
 	// Parse the token
-	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return key, nil
 	})
 
-	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
+	if token != nil {
 		return claims, nil
-	} else {
-		return nil, err
 	}
+
+	return nil, err
 }
 
 // Encode a claim into a JWT
@@ -57,6 +59,10 @@ func (e *TokenService) Encode(user *user.User) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString(key)
+	if err == nil {
+		return tokenString, nil
+	}
 
-	return token.SignedString(key)
+	return "", err
 }
