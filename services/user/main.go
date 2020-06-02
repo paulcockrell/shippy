@@ -7,6 +7,7 @@ import (
 	"github.com/paulcockrell/shippy/services/user/handler"
 	user "github.com/paulcockrell/shippy/services/user/proto/user"
 	repository "github.com/paulcockrell/shippy/services/user/repository"
+	tokenservice "github.com/paulcockrell/shippy/services/user/tokenservice"
 )
 
 func main() {
@@ -18,7 +19,8 @@ func main() {
 	defer db.Close()
 
 	db.AutoMigrate(&user.User{})
-	repository := &repository.UserRepository{db}
+	repo := &repository.UserRepository{db}
+	ts := &tokenservice.TokenService{repo}
 
 	// New Service
 	service := micro.NewService(
@@ -30,7 +32,11 @@ func main() {
 	service.Init()
 
 	// Register Handler
-	user.RegisterUserServiceHandler(service.Server(), &handler.User{repository})
+	h := &handler.User{
+		Repository:   repo,
+		TokenService: ts,
+	}
+	user.RegisterUserServiceHandler(service.Server(), h)
 
 	// Run service
 	if err := service.Run(); err != nil {

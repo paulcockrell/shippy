@@ -12,7 +12,7 @@ import (
 type Repository interface {
 	GetAll(ctx context.Context) ([]*user.User, error)
 	Get(ctx context.Context, id string) (*user.User, error)
-	GetByEmailAndPassword(user *user.User) (*user.User, error)
+	GetByEmail(user *user.User) (*user.User, error)
 	Create(user *user.User) error
 }
 
@@ -42,8 +42,8 @@ func (r *UserRepository) Get(ctx context.Context, id string) (*user.User, error)
 	return user, nil
 }
 
-// GetByEmailAndPassword -
-func (r *UserRepository) GetByEmailAndPassword(user *user.User) (*user.User, error) {
+// GetByEmail -
+func (r *UserRepository) GetByEmail(user *user.User) (*user.User, error) {
 	if err := r.Db.First(&user).Error; err != nil {
 		return nil, err
 	}
