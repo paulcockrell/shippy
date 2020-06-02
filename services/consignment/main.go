@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 
 	"github.com/paulcockrell/shippy/services/consignment/handler"
 	"github.com/paulcockrell/shippy/services/consignment/subscriber"
@@ -9,10 +10,14 @@ import (
 	"os"
 
 	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/client"
 	log "github.com/micro/go-micro/v2/logger"
+	"github.com/micro/go-micro/v2/metadata"
+	"github.com/micro/go-micro/v2/server"
 
 	consignment "github.com/paulcockrell/shippy/services/consignment/proto/consignment"
 
+	userProto "github.com/paulcockrell/shippy/services/user/proto/user"
 	vesselProto "github.com/paulcockrell/shippy/services/vessel/proto/vessel"
 
 	repository "github.com/paulcockrell/shippy/services/consignment/repository"
@@ -45,6 +50,7 @@ func main() {
 	service := micro.NewService(
 		micro.Name("com.foo.service.consignment"),
 		micro.Version("latest"),
+		micro.WrapHandler(AuthWrapper),
 	)
 
 	// Initialise service
@@ -61,5 +67,29 @@ func main() {
 	// Run service
 	if err := service.Run(); err != nil {
 		log.Fatal(err)
+	}
+}
+
+// AuthWrapper - Validate token with user service before handling request
+func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
+	return func(ctx context.Context, req server.Request, rsp interface{}) error {
+		meta, ok := metadata.FromContext(ctx)
+		if !ok {
+			return errors.New("no auth meta-data found in request")
+		}
+
+		token := meta["Token"]
+
+		authClient := userProto.NewUserService("com.foo.service.user", client.DefaultClient)
+		_, err := authClient.ValidateToken(context.Background(), &userProto.Token{
+			Token: token,
+		})
+		if err != nil {
+			return err
+		}
+
+		err = fn(ctx, req, rsp)
+
+		return err
 	}
 }
