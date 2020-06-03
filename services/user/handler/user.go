@@ -2,8 +2,10 @@ package handler
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 
+	"github.com/micro/go-micro/v2/broker"
 	log "github.com/micro/go-micro/v2/logger"
 	"golang.org/x/crypto/bcrypt"
 
@@ -12,10 +14,13 @@ import (
 	tokenservice "github.com/paulcockrell/shippy/services/user/tokenservice"
 )
 
+const topic = "user.created"
+
 // User -
 type User struct {
 	Repository   repository.Repository
 	TokenService *tokenservice.TokenService
+	PubSub       broker.Broker
 }
 
 // GetAll -
@@ -77,6 +82,30 @@ func (e *User) Create(ctx context.Context, req *user.User, rsp *user.Response) e
 	}
 
 	rsp.User = req
+	if err := e.publishEvent(req); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (e *User) publishEvent(user *user.User) error {
+	body, err := json.Marshal(user)
+	if err != nil {
+		return err
+	}
+
+	// Create a broker message
+	msg := &broker.Message{
+		Header: map[string]string{
+			"id": user.Id,
+		},
+		Body: body,
+	}
+
+	if err := e.PubSub.Publish(topic, msg); err != nil {
+		log.Infof("[pub] failed: %v", err)
+	}
 
 	return nil
 }

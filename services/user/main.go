@@ -31,10 +31,14 @@ func main() {
 	// Initialise service
 	service.Init()
 
+	// Get an instance of the broker using our defaults
+	pubsub := service.Server().Options().Broker
+
 	// Register Handler
 	h := &handler.User{
 		Repository:   repo,
 		TokenService: ts,
+		PubSub:       pubsub,
 	}
 	user.RegisterUserServiceHandler(service.Server(), h)
 
