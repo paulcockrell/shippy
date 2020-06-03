@@ -64,6 +64,18 @@ services:
       - postgres
       - nats
 
+  email:
+    build: ./services/email
+    image: email-service:latest
+    environment:
+      MICRO_ADDRESS: ":50051"
+      MICRO_REGISTRY: "mdns"
+      WAIT_HOSTS: nats:4222
+    links:
+      - nats
+    depends_on:
+      - nats
+
   mongo:
     image: mongo
     expose:
