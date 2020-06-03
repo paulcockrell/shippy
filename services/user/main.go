@@ -28,11 +28,25 @@ func main() {
 		micro.Version("latest"),
 	)
 
+	// var pubsub broker.Broker
+
 	// Initialise service
+	// service.Init(micro.AfterStart(func() error {
+	// 	pubsub = service.Options().Broker
+	// 	if err := pubsub.Connect(); err != nil {
+	// 		log.Fatalf("Broker connect error: %v", err)
+	// 	}
+
+	// 	return nil
+	// }))
+
 	service.Init()
 
 	// Get an instance of the broker using our defaults
 	pubsub := service.Server().Options().Broker
+	if err := pubsub.Connect(); err != nil {
+		log.Fatalf("Broker not connected error: %v", err)
+	}
 
 	// Register Handler
 	h := &handler.User{

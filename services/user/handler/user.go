@@ -90,6 +90,8 @@ func (e *User) Create(ctx context.Context, req *user.User, rsp *user.Response) e
 }
 
 func (e *User) publishEvent(user *user.User) error {
+	log.Info("Publishing event!")
+
 	body, err := json.Marshal(user)
 	if err != nil {
 		return err
@@ -105,6 +107,7 @@ func (e *User) publishEvent(user *user.User) error {
 
 	if err := e.PubSub.Publish(topic, msg); err != nil {
 		log.Infof("[pub] failed: %v", err)
+		return err
 	}
 
 	return nil

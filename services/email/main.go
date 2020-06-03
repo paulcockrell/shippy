@@ -19,34 +19,42 @@ func main() {
 	)
 
 	// Initialise service
-	service.Init()
-
-	// Get the broker instance using our environment variables
-	pubsub := service.Server().Options().Broker
-	if err := pubsub.Connect(); err != nil {
-		log.Fatal(err)
-	}
-
-	// Subscribe to messages on the broker
-	_, err := pubsub.Subscribe(topic, func(e broker.Event) error {
-		var user *userProto.User
-		if err := json.Unmarshal(e.Message().Body, &user); err != nil {
-			return err
+	service.Init(micro.AfterStart(func() error {
+		brk := service.Options().Broker
+		if err := brk.Connect(); err != nil {
+			log.Fatalf("Broker connect error: %v", err)
 		}
 
-		log.Info(user)
-		go sendEmail(user)
+		go sub(brk)
 
 		return nil
-	})
-
-	if err != nil {
-		log.Info(err)
-	}
+	}))
 
 	// Run service
 	if err := service.Run(); err != nil {
 		log.Fatal(err)
+	}
+}
+
+func sub(brk broker.Broker) {
+	// Subscribe to messages on the broker
+	_, err := brk.Subscribe(topic, func(p broker.Event) error {
+		log.Info("Got an event")
+
+		var user *userProto.User
+		if err := json.Unmarshal(p.Message().Body, &user); err != nil {
+			return err
+		}
+
+		log.Info(user)
+
+		go sendEmail(user)
+
+		return nil
+	}, broker.Queue(topic))
+
+	if err != nil {
+		log.Info(err)
 	}
 }
 
