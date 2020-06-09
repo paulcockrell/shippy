@@ -41,7 +41,7 @@ func (f *Foo) Bar(ctx context.Context, req *proto.EmptyRequest, rsp *proto.Empty
 
 func main() {
 	service := micro.NewService(
-		micro.Name("fart.bob.pants.example"),
+		micro.Name("com.foo.api.example"),
 	)
 
 	service.Init()
