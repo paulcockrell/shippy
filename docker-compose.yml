@@ -21,8 +21,9 @@ services:
     environment:
       MICRO_ADDRESS: ":8080"
       MICRO_REGISTRY: "mdns"
-      MICRO_API_NAMESPACE: "com.foo.api"
+      MICRO_API_NAMESPACE: "com.foo.service"
       MICRO_API_HANDLER: "rpc"
+      MICRO_API_ENABLE_RPC: "true"
 
   consignment:
     build: ./services/consignment
@@ -109,6 +110,8 @@ services:
     image: postgres
     expose:
       - "5432"
+    ports:
+      - 5433:5432
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres

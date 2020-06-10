@@ -2,10 +2,10 @@ package handler
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
+	"fmt"
 
-	"github.com/micro/go-micro/v2/broker"
+	"github.com/micro/go-micro/v2"
 	log "github.com/micro/go-micro/v2/logger"
 	"golang.org/x/crypto/bcrypt"
 
@@ -20,7 +20,8 @@ const topic = "user.created"
 type User struct {
 	Repository   repository.Repository
 	TokenService *tokenservice.TokenService
-	PubSub       broker.Broker
+	//PubSub       broker.Broker
+	Publisher micro.Publisher
 }
 
 // GetAll -
@@ -82,13 +83,17 @@ func (e *User) Create(ctx context.Context, req *user.User, rsp *user.Response) e
 	}
 
 	rsp.User = req
-	if err := e.publishEvent(req); err != nil {
-		return err
+	//if err := e.publishEvent(req); err != nil {
+	//	return err
+	//}
+	if err := e.Publisher.Publish(ctx, req); err != nil {
+		return errors.New(fmt.Sprintf("error publishing event %v", err))
 	}
 
 	return nil
 }
 
+/*
 func (e *User) publishEvent(user *user.User) error {
 	log.Info("Publishing event!")
 
@@ -112,6 +117,7 @@ func (e *User) publishEvent(user *user.User) error {
 
 	return nil
 }
+*/
 
 // ValidateToken -
 func (e *User) ValidateToken(ctx context.Context, req *user.Token, rsp *user.Token) error {

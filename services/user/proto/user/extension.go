@@ -1,4 +1,4 @@
-package go_micro_service_user
+package com_foo_service_user
 
 import (
 	"github.com/jinzhu/gorm"

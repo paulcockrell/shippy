@@ -43,16 +43,18 @@ func main() {
 	service.Init()
 
 	// Get an instance of the broker using our defaults
-	pubsub := service.Server().Options().Broker
-	if err := pubsub.Connect(); err != nil {
-		log.Fatalf("Broker not connected error: %v", err)
-	}
+	// pubsub := service.Server().Options().Broker
+	// if err := pubsub.Connect(); err != nil {
+	// 	log.Fatalf("Broker not connected error: %v", err)
+	// }
 
 	// Register Handler
+	publisher := micro.NewEvent("user.created", service.Client())
 	h := &handler.User{
 		Repository:   repo,
 		TokenService: ts,
-		PubSub:       pubsub,
+		Publisher:    publisher,
+		//PubSub:       pubsub,
 	}
 	user.RegisterUserServiceHandler(service.Server(), h)
 
