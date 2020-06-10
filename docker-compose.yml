@@ -28,8 +28,6 @@ services:
   consignment:
     build: ./services/consignment
     image: consignment-service:latest
-    ports:
-      - 50051:50051
     environment:
       MICRO_ADDRESS: ":50051"
       MICRO_REGISTRY: "mdns"
@@ -43,8 +41,6 @@ services:
   vessel:
     build: ./services/vessel
     image: vessel-service:latest
-    ports:
-      - 50052:50051
     environment:
       MICRO_ADDRESS: ":50051"
       MICRO_REGISTRY: "mdns"
@@ -58,8 +54,6 @@ services:
   user:
     build: ./services/user
     image: user-service:latest
-    ports:
-      - 50053:50051
     environment:
       MICRO_BROKER: "nats"
       MICRO_BROKER_ADDRESS: "nats://nats:4222"
@@ -92,12 +86,11 @@ services:
     depends_on:
       - nats
 
-  user-api:
-    build: ./services/user-api
-    image: user-api:latest
-    environment:
-      MICRO_ADDRESS: ":50051"
-      MICRO_REGISTRY: "mdns"
+  shippy-ui:
+    build: ./web/shippy-ui
+    image: shippy-ui:latest
+    ports:
+      - 3000:80
 
   mongo:
     image: mongo
@@ -110,8 +103,6 @@ services:
     image: postgres
     expose:
       - "5432"
-    ports:
-      - 5433:5432
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
