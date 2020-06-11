@@ -1,0 +1,6 @@
+gcloud_project = "shippy-infrastructure-280009"
+gcloud_region = "europe-west2"
+gcloud_zone = "europe-west2-a"
+platform_name = "shippy-platform"
+linux_admin_username = "misteradmin"
+linux_admin_password = "misteradminsmegapassword1"
