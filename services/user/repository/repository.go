@@ -12,7 +12,7 @@ import (
 type Repository interface {
 	GetAll(ctx context.Context) ([]*user.User, error)
 	Get(ctx context.Context, id string) (*user.User, error)
-	GetByEmail(user *user.User) (*user.User, error)
+	GetByEmail(email string) (*user.User, error)
 	Create(user *user.User) error
 }
 
@@ -43,8 +43,10 @@ func (r *UserRepository) Get(ctx context.Context, id string) (*user.User, error)
 }
 
 // GetByEmail -
-func (r *UserRepository) GetByEmail(user *user.User) (*user.User, error) {
-	if err := r.Db.First(&user).Error; err != nil {
+func (r *UserRepository) GetByEmail(email string) (*user.User, error) {
+	user := &user.User{}
+	if err := r.Db.Where("email = ?", email).
+		First(&user).Error; err != nil {
 		return nil, err
 	}
 

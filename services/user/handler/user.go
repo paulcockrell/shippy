@@ -50,13 +50,12 @@ func (e *User) Get(ctx context.Context, req *user.User, rsp *user.Response) erro
 
 // Auth -
 func (e *User) Auth(ctx context.Context, req *user.User, rsp *user.Token) error {
-	pwd := req.Password
-	user, err := e.Repository.GetByEmail(req)
+	user, err := e.Repository.GetByEmail(req.Email)
 	if err != nil {
 		return err
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(pwd)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
 		return err
 	}
 
@@ -72,6 +71,7 @@ func (e *User) Auth(ctx context.Context, req *user.User, rsp *user.Token) error 
 
 // Create -
 func (e *User) Create(ctx context.Context, req *user.User, rsp *user.Response) error {
+	log.Info("YYY", req.Password)
 	hashedPass, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
