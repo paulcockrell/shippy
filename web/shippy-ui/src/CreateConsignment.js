@@ -8,46 +8,53 @@ class CreateConsignment extends Component {
       weight: 0,
       containers: [],
       consignments: [],
+      token: localStorage.getItem("token"),
   }
 
   componentWillMount() {
-    fetch(process.env.API_ENDPOINT, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            service: 'com.foo.service.consignment',
-            method: 'ConsignmentService.Get',
-            request: {},
-        })
-    })
-    .then(req => req.json())
-    .then((res) => {
-        this.setState({
-            consignments: res.consignments,
-        });
-    });
+      const { token } = this.state
+
+      fetch(process.env.REACT_APP_API_ENDPOINT, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              "Token": token,
+          },
+          body: JSON.stringify({
+              service: 'com.foo.service.consignment',
+              method: 'ShippingService.GetConsignments',
+              request: {},
+          })
+      })
+      .then(req => req.json())
+      .then((res) => {
+          this.setState({
+              consignments: res.consignments,
+          });
+      });
   }
 
   create = () => {
-      const consignment = this.state;
-      fetch(process.env.API_ENDPOINT, {
+      const { token } = this.state
+      const { description, weight } = this.state;
+
+      fetch(process.env.REACT_APP_API_ENDPOINT, {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
+              "Token": token,
           },
           body: JSON.stringify({
               service: "com.foo.service.consignment",
-              method: "ConsignmentService.Create",
-              request: _.omit(consignment, "created", "consignments"),
+              method: "ShippingService.CreateConsignment",
+              request: { description, weight },
           }),
       })
       .then((res) => res.json())
       .then((res) => {
           this.setState({
               created: res.created,
-              consignments: [...this.state.consignments, consignment],
+              consignments: [...this.state.consignments, res.consignment],
           });
       });
   }

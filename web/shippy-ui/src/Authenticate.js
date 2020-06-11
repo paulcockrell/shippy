@@ -23,18 +23,20 @@ class Authenticate extends Component {
                 method: "UserService.Auth",
             }),
         })
-        .then(res => res.JSON())
+        .then(res => res.json())
         .then(res => {
             this.props.onAuth(res.token)
             this.setState({
                 token: res.token,
                 authenticated: true,
             })
+            localStorage.setItem("token", res.token)
         })
         .catch(err => this.setState({ err, authenticated: false, }))
     }
 
     signup = () => {
+        console.log("Signuppoo = res.")
         fetch(process.env.REACT_APP_API_ENDPOINT, {
             method: "POST",
             headers: {
@@ -50,16 +52,20 @@ class Authenticate extends Component {
                 method: "UserService.Create",
             }),
         })
-        .then(res => res.JSON())
+        .then(res => res.json())
         .then(res => {
+            document.poo = res
             this.props.onAuth(res.token)
             this.setState({
                 token: res.token,
                 authenticated: true,
             })
-            localStorage.setItem("token", res.token.token)
+            localStorage.setItem("token", res.token)
         })
-        .catch(err => this.setState({ err, authenticated: false, }))
+        .catch(err => {
+            console.log(err)
+            this.setState({ err, authenticated: false, })
+        })
     }
 
     setEmail = e => {
