@@ -9,7 +9,7 @@ class Authenticate extends Component {
     }
 
     login = () => {
-        fetch("http://localhost:8080/rpc", {
+        fetch(process.env.REACT_APP_API_ENDPOINT, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -35,7 +35,7 @@ class Authenticate extends Component {
     }
 
     signup = () => {
-        fetch("http://localhost:8080/rpc", {
+        fetch(process.env.REACT_APP_API_ENDPOINT, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

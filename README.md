@@ -22,4 +22,30 @@ $> micro cli
 ```
 View in browser at `http://127.0.0.1:8082/client`
 
+Example JSON payloads that can be sent to services
+
+#### Consignment JSON
+```
+{
+  "description": "This is a test consignment",
+  "weight": 55000,
+  "containers": [
+    { "customer_id": "cust001", "user_id": "user001", "origin": "Manchester, United Kingdom" },
+    { "customer_id": "cust002", "user_id": "user001", "origin": "Derby, United Kingdom" },
+    { "customer_id": "cust005", "user_id": "user001", "origin": "Sheffield, United Kingdom" }
+  ]
+}
+```
+
+#### Vessel JSON
+```
+{
+  "id": "vessel001",
+  "name": "Boaty McBoatFace",
+  "max_weight": 200000,
+  "capacity": 500
+}
+```
+
 ## Deployment
+

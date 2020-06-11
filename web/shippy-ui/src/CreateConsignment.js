@@ -11,7 +11,7 @@ class CreateConsignment extends Component {
   }
 
   componentWillMount() {
-    fetch("http://localhost:8080/rpc", {
+    fetch(process.env.API_ENDPOINT, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ class CreateConsignment extends Component {
 
   create = () => {
       const consignment = this.state;
-      fetch("http://localhost:8080/rpc", {
+      fetch(process.env.API_ENDPOINT, {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
