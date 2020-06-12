@@ -4,6 +4,8 @@ import (
 	"github.com/micro/go-micro/v2"
 	log "github.com/micro/go-micro/v2/logger"
 
+	"github.com/micro/go-plugins/client/selector/static/v2"
+	"github.com/micro/go-plugins/registry/kubernetes/v2"
 	"github.com/paulcockrell/shippy/services/user/handler"
 	user "github.com/paulcockrell/shippy/services/user/proto/user"
 	repository "github.com/paulcockrell/shippy/services/user/repository"
@@ -11,6 +13,8 @@ import (
 )
 
 func main() {
+	/*** Setup DB ***/
+
 	db, err := CreateConnection()
 	if err != nil {
 		log.Fatalf("Could not connect to DB: %v", err)
@@ -22,31 +26,21 @@ func main() {
 	repo := &repository.UserRepository{db}
 	ts := &tokenservice.TokenService{repo}
 
+	/*** Setup service ***/
+
+	// create registry and selector
+	r := kubernetes.NewRegistry()
+	s := static.NewSelector()
+
 	// New Service
 	service := micro.NewService(
+		micro.Registry(r),
+		micro.Selector(s),
 		micro.Name("com.foo.service.user"),
 		micro.Version("latest"),
 	)
 
-	// var pubsub broker.Broker
-
-	// Initialise service
-	// service.Init(micro.AfterStart(func() error {
-	// 	pubsub = service.Options().Broker
-	// 	if err := pubsub.Connect(); err != nil {
-	// 		log.Fatalf("Broker connect error: %v", err)
-	// 	}
-
-	// 	return nil
-	// }))
-
 	service.Init()
-
-	// Get an instance of the broker using our defaults
-	// pubsub := service.Server().Options().Broker
-	// if err := pubsub.Connect(); err != nil {
-	// 	log.Fatalf("Broker not connected error: %v", err)
-	// }
 
 	// Register Handler
 	publisher := micro.NewEvent("user.created", service.Client())

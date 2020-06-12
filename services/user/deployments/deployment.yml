@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: default
+    name: user
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: user
+    template:
+        metadata:
+            labels:
+                app: user
+        spec:
+            containers:
+                - name: user-service
+                  image: user-service:latest
+                  imagePullPolicy: Never
+                  command: [
+                      "./user-service",
+                      "--selector=static",
+                      "--server_address=:8080",
+                  ]
+                  env:
+                      - name: DB_HOST
+                        value: "postgres:5432"
+                      - name: DB_NAME
+                        value: "postgres"
+                      - name: DB_PASS
+                        value: "postgres"
+                      - name: DB_USER
+                        value: "postgres"
+                      - name: UPDATED_AT
+                        value: "Fri 12 Jun 2020 04:02:56 PM BST"
+                  ports:
+                      - containerPort: 8080
+                        name: user-port
