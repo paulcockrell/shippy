@@ -32,6 +32,11 @@ minikube start --vm-driver=kvm2 --memory=4096
 
 ## Deploy
 
+### Manually create a secret for db passwords.. e.g:
+```
+kubectl create secret generic postgres --from-literal=password=postgres
+```
+
 ### Database
 ```
 kubectl create -f ./deployments/mongodb-ssd.yml

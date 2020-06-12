@@ -24,7 +24,9 @@ spec:
                   ]
                   env:
                       - name: DB_HOST
-                        value: "postgres:5432"
+                        value: "postgres"
+                      - name: DB_PORT
+                        value: "5432"
                       - name: DB_NAME
                         value: "postgres"
                       - name: DB_PASS
