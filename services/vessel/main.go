@@ -10,6 +10,8 @@ import (
 
 	"github.com/micro/go-micro/v2"
 	log "github.com/micro/go-micro/v2/logger"
+	"github.com/micro/go-plugins/client/selector/static/v2"
+	"github.com/micro/go-plugins/registry/kubernetes/v2"
 
 	vessel "github.com/paulcockrell/shippy/services/vessel/proto/vessel"
 )
@@ -37,8 +39,14 @@ func main() {
 
 	/*** Setup Service ***/
 
+	// create registry and selector
+	r := kubernetes.NewRegistry()
+	s := static.NewSelector()
+
 	// New Service
 	service := micro.NewService(
+		micro.Registry(r),
+		micro.Selector(s),
 		micro.Name("com.foo.service.vessel"),
 		micro.Version("latest"),
 	)

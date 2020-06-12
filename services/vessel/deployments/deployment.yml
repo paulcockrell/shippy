@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: default
+    name: vessel
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: vessel
+    template:
+        metadata:
+            labels:
+                app: vessel
+        spec:
+            containers:
+                - name: vessel-service
+                  image: vessel-service:latest
+                  imagePullPolicy: Never
+                  command: [
+                      "./vessel-service",
+                      "--selector=static",
+                      "--server_address=:8080",
+                  ]
+                  env:
+                      - name: DB_HOST
+                        value: "mongodb://mongo:27017"
+                      - name: UPDATED_AT
+                        value: "Fri 12 June 2020 14:10:00 GMT"
+                  ports:
+                      - containerPort: 8080
+                        name: vessel-port
