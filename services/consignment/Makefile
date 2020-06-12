@@ -17,3 +17,8 @@ test:
 .PHONY: docker
 docker:
 	docker build . -t consignment-service:latest
+
+.Phony: deploy    
+deploy:    
+	sed "s/{{ UPDATED_AT }}/$(shell date)/g" ./deployments/deployment.tmpl > ./deployments/deployment.yml
+	kubectl replace -f ./deployments/deployment.yml

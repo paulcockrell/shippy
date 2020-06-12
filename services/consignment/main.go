@@ -20,6 +20,8 @@ import (
 	userProto "github.com/paulcockrell/shippy/services/user/proto/user"
 	vesselProto "github.com/paulcockrell/shippy/services/vessel/proto/vessel"
 
+	"github.com/micro/go-plugins/client/selector/static/v2"
+	"github.com/micro/go-plugins/registry/kubernetes/v2"
 	repository "github.com/paulcockrell/shippy/services/consignment/repository"
 )
 
@@ -46,8 +48,14 @@ func main() {
 
 	/*** Setup Service ***/
 
+	// create registry and selector
+	r := kubernetes.NewRegistry()
+	s := static.NewSelector()
+
 	// New Service
 	service := micro.NewService(
+		micro.Registry(r),
+		micro.Selector(s),
 		micro.Name("com.foo.service.consignment"),
 		micro.Version("latest"),
 		micro.WrapHandler(AuthWrapper),
