@@ -311,6 +311,10 @@ github.com/micro/go-micro/v2 v2.8.0/go.mod h1:hSdOM6jb6aGswjBpCeB9wJ0yVH+CugevRm
 github.com/micro/go-plugins v1.5.1 h1:swcFD7ynCTUo98APqIEIbPu2XMd6yVGTnI8PqdnCwOQ=
 github.com/micro/go-plugins/broker/nats v0.0.0-20200119172437-4fe21aa238fd h1:QTHUm4cGysU2/otF8a7nMVm7rcZuZznzJZd4l1hXABw=
 github.com/micro/go-plugins/broker/nats v0.0.0-20200119172437-4fe21aa238fd/go.mod h1:bvKwErhTuUz91MfBRW0ZTWuoGNaFFPfwMkCIiHgOxNQ=
+github.com/micro/go-plugins/client/selector/static/v2 v2.8.0 h1:3sUHQO/Yf4cfJG6XIigQuiBpatM6EGDolKXFl0XSo7A=
+github.com/micro/go-plugins/client/selector/static/v2 v2.8.0/go.mod h1:mzRwnpNPM5oje03h3aAbqJ4F6ziPxV5QY+ZWxCJQ0XA=
+github.com/micro/go-plugins/registry/kubernetes/v2 v2.8.0 h1:Wfmp4e2/g5mKax1p9ISvReS5fSS21vgsH1XT3Th5pUE=
+github.com/micro/go-plugins/registry/kubernetes/v2 v2.8.0/go.mod h1:QffSxfttDaUYfGWDcia69SGA0I3t/vd4+0Xkqeqylfg=
 github.com/micro/go-plugins/transport/nats v0.0.0-20200119172437-4fe21aa238fd h1:8Y9QIhRkroWJXFZp5KMw402qhh1GhiTcSrOdkfZVCs0=
 github.com/micro/go-plugins/transport/nats v0.0.0-20200119172437-4fe21aa238fd/go.mod h1:IiSBzPHRyZ2cmf7cRQuL5w8Ad/UQDhGPj+MF3KuqTYA=
 github.com/micro/mdns v0.3.0 h1:bYycYe+98AXR3s8Nq5qvt6C573uFTDPIYzJemWON0QE=

@@ -6,14 +6,24 @@ import (
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/broker"
 	log "github.com/micro/go-micro/v2/logger"
+	"github.com/micro/go-plugins/client/selector/static/v2"
+	"github.com/micro/go-plugins/registry/kubernetes/v2"
 	userProto "github.com/paulcockrell/shippy/services/user/proto/user"
 )
 
 const topic = "user.created"
 
 func main() {
+	/*** Setup Service ***/
+
+	// create registry and selector
+	r := kubernetes.NewRegistry()
+	s := static.NewSelector()
+
 	// New Service
 	service := micro.NewService(
+		micro.Registry(r),
+		micro.Selector(s),
 		micro.Name("com.foo.service.email"),
 		micro.Version("latest"),
 	)
