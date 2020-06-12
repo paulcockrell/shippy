@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    namespace: default
+    name: shippy-ui
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: shippy-ui
+    template:
+        metadata:
+            labels:
+                app: shippy-ui
+        spec:
+            containers:
+                - name: shippy-ui
+                  image: shippy-ui:latest
+                  imagePullPolicy: Never
+                  env:
+                      - name: UPDATED_AT
+                        value: "Fri 12 Jun 2020 04:37:02 PM BST"
+                  ports:
+                      - containerPort: 80
+                        name: ui-port
