@@ -13,6 +13,7 @@ spec:
       labels:
         app: mongo
         role: mongo
+        environment: test
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -25,7 +26,9 @@ spec:
             - "--bind_ip"
             - "0.0.0.0"
           ports:
-            - containerPort: 27017
+            - name: mongo
+              containerPort: 27017
+              protocol: TCP
           volumeMounts:
             - mountPath: "/data/db"
               name: mongo-persistent-storage
