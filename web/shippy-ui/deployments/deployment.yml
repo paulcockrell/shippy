@@ -19,7 +19,7 @@ spec:
                   imagePullPolicy: Never
                   env:
                       - name: UPDATED_AT
-                        value: "Fri 12 Jun 2020 04:37:02 PM BST"
+                        value: "Sat 13 Jun 2020 09:36:10 AM BST"
                   ports:
                       - containerPort: 80
-                        name: ui-port
+                        name: shippy-ui-port
