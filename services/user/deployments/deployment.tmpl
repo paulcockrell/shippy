@@ -29,8 +29,11 @@ spec:
                         value: "5432"
                       - name: DB_NAME
                         value: "postgres"
-                      - name: DB_PASS
-                        value: "postgres"
+                      - name: DB_PASSWORD
+                        valueFrom:
+                          secretKeyRef:
+                            name: postgres
+                            key: password
                       - name: DB_USER
                         value: "postgres"
                       - name: UPDATED_AT

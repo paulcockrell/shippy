@@ -14,14 +14,20 @@ spec:
     spec:
         containers:
         - name: micro
-          image: microhq/micro:kubernetes
+          image: micro/micro
           args:
             - "api"
-            - "--handler=rpc"
-            - "--namespace=shippy"
           env:
           - name: MICRO_API_ADDRESS
             value: ":80"
+          - name: MICRO_REGISTRY
+            value: "mdns"
+          - name: MICRO_API_NAMESPACE
+            value: "com.foo.service"
+          - name: MICRO_API_HANDLER
+            value: "rpc"
+          - name: MICRO_API_ENABLE_RPC
+            value: "true"
           ports:
           - containerPort: 80
             name: port

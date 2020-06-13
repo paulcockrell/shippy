@@ -29,12 +29,15 @@ spec:
                         value: "5432"
                       - name: DB_NAME
                         value: "postgres"
-                      - name: DB_PASS
-                        value: "postgres"
+                      - name: DB_PASSWORD
+                        valueFrom:
+                          secretKeyRef:
+                            name: postgres
+                            key: password
                       - name: DB_USER
                         value: "postgres"
                       - name: UPDATED_AT
-                        value: "Fri 12 Jun 2020 07:40:52 PM BST"
+                        value: "Sat 13 Jun 2020 07:47:31 AM BST"
                   ports:
                       - containerPort: 8080
                         name: user-port
