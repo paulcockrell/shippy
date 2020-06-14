@@ -4,12 +4,25 @@ Project uses minikube as 'production' deployment
 
 ## Minikube
 
+### Addons
+You must install the following Minikube addons
+```
+minikube addons enable ingress
+```
+
+XXX The following external stuff might not be needed if the ingress controller works
 ### EXTERNAL IPs
 
 This is important, as we are running Minikube we will never get external ips assigned to our services that request them, to work around this we must run the following against a running Minikube cluster
+#### Network setup
 ```
 sudo ip route add $(cat ~/.minikube/profiles/minikube/config.json | jq -r ".KubernetesConfig.ServiceCIDR") via $(minikube ip)
 kubectl run minikube-lb-patch --replicas=1 --image=elsonrodriguez/minikube-lb-patch:0.1 --namespace=kube-system
+```
+#### Network teardown
+```
+kubectl delete deployment minikube-lb-patch -nkube-system
+sudo ip route delete $(cat ~/.minikube/profiles/minikube/config.json | jq -r ".KubernetesConfig.ServiceCIDR") via $(minikube ip)
 ```
 
 See the following for more information:
