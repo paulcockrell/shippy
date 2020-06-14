@@ -5,13 +5,31 @@ Project uses minikube as 'production' deployment
 ## Minikube
 
 ### Addons
+#### Ingress
+
+From the following [resource](https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/)
+
 You must install the following Minikube addons
 ```
 minikube addons enable ingress
 ```
 
-XXX The following external stuff might not be needed if the ingress controller works
+Create the ingress service
+```
+kubectl apply -f ingress.yml
+```
+
+Update `/etc/hosts` with the assigned ip and use the host name specified in the ingress definition file e.g:
+```
+172.1.2.3 ingress.local
+```
+
+You can now visit one URL and reach various services via the specfied paths!
+_Web_ : `http://ingress.local/`
+_API_ : `http://ingrses.local/api`
+
 ### EXTERNAL IPs
+***This might not be necessary now we have the ingress controller***
 
 This is important, as we are running Minikube we will never get external ips assigned to our services that request them, to work around this we must run the following against a running Minikube cluster
 #### Network setup
@@ -70,6 +88,6 @@ kubectl create -f ./deployments/mongodb-service.yml
 ```
 
 ### Services
-Each service has its own deployment script
+Each service has its own deployment script in its own deployment folder
 
 
