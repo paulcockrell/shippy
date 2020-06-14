@@ -4,6 +4,18 @@ Project uses minikube as 'production' deployment
 
 ## Minikube
 
+### EXTERNAL IPs
+
+This is important, as we are running Minikube we will never get external ips assigned to our services that request them, to work around this we must run the following against a running Minikube cluster
+```
+sudo ip route add $(cat ~/.minikube/profiles/minikube/config.json | jq -r ".KubernetesConfig.ServiceCIDR") via $(minikube ip)
+kubectl run minikube-lb-patch --replicas=1 --image=elsonrodriguez/minikube-lb-patch:0.1 --namespace=kube-system
+```
+
+See the following for more information:
+1. https://github.com/knative/serving/blob/b31d96e03bfa1752031d0bc4ae2a3a00744d6cd5/docs/creating-a-kubernetes-cluster.md#loadbalancer-support-in-minikube
+2. https://github.com/elsonrodriguez/minikube-lb-patch
+
 ### Docker images
 
 You will need to follow these steps for the service images to be available in Minikube
