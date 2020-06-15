@@ -9,7 +9,8 @@ class Authenticate extends Component {
     }
 
     login = () => {
-        fetch(process.env.REACT_APP_API_ENDPOINT, {
+        const url = `${process.env.REACT_APP_API_ENDPOINT}/rpc`
+        fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -36,8 +37,8 @@ class Authenticate extends Component {
     }
 
     signup = () => {
-        console.log("Signuppoo = res.")
-        fetch(process.env.REACT_APP_API_ENDPOINT, {
+        const url = `${process.env.REACT_APP_API_ENDPOINT}/rpc`
+        fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

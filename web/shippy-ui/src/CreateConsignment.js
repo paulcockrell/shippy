@@ -13,8 +13,9 @@ class CreateConsignment extends Component {
 
   componentWillMount() {
       const { token } = this.state
+      const url = `${process.env.REACT_APP_API_ENDPOINT}/rpc`
 
-      fetch(process.env.REACT_APP_API_ENDPOINT, {
+      fetch(url, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -37,8 +38,9 @@ class CreateConsignment extends Component {
   create = () => {
       const { token } = this.state
       const { description, weight } = this.state;
+      const url = `${process.env.REACT_APP_API_ENDPOINT}/rpc`
 
-      fetch(process.env.REACT_APP_API_ENDPOINT, {
+      fetch(url, {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
