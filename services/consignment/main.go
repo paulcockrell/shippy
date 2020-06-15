@@ -30,6 +30,7 @@ const (
 )
 
 func main() {
+	log.Info("Consignment service booting")
 	/*** Setup DB ***/
 
 	uri := os.Getenv("DB_HOST")

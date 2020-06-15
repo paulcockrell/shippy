@@ -24,9 +24,13 @@ spec:
                   ]
                   env:
                       - name: DB_HOST
-                        value: "mongodb://mongo:27017"
+                        value: mongodb://mongo:27017
+                      - name: MICRO_ADDRESS
+                        value: :50051
+                      - name: MICRO_REGISTRY
+                        value: mdns
                       - name: UPDATED_AT
-                        value: "Sat 13 Jun 2020 09:50:24 AM BST"
+                        value: "Mon 15 Jun 2020 08:42:43 AM BST"
                   ports:
                       - containerPort: 8080
                         name: cons-port
