@@ -48,7 +48,6 @@ func main() {
 		Repository:   repo,
 		TokenService: ts,
 		Publisher:    publisher,
-		//PubSub:       pubsub,
 	}
 	user.RegisterUserServiceHandler(service.Server(), h)
 

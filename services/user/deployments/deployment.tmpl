@@ -23,6 +23,10 @@ spec:
                       "--server_address=:8080",
                   ]
                   env:
+                      - name: MICRO_REGISTRY
+                        value: mdns
+                      - name: MICRO_ADDRESS
+                        value: :50051
                       - name: DB_HOST
                         value: "postgres"
                       - name: DB_PORT

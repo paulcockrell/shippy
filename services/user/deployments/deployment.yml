@@ -23,6 +23,10 @@ spec:
                       "--server_address=:8080",
                   ]
                   env:
+                      - name: MICRO_REGISTRY
+                        value: mdns
+                      - name: MICRO_ADDRESS
+                        value: :50051
                       - name: DB_HOST
                         value: "postgres"
                       - name: DB_PORT
@@ -37,7 +41,7 @@ spec:
                       - name: DB_USER
                         value: "postgres"
                       - name: UPDATED_AT
-                        value: "Sat 13 Jun 2020 07:47:31 AM BST"
+                        value: "Mon 15 Jun 2020 10:06:28 AM BST"
                   ports:
                       - containerPort: 8080
                         name: user-port
