@@ -13,6 +13,7 @@ spec:
             labels:
                 app: consignment
         spec:
+            restartPolicy: Always
             containers:
                 - name: consignment-service
                   image: consignment-service:latest
@@ -26,11 +27,11 @@ spec:
                       - name: DB_HOST
                         value: mongodb://mongo:27017
                       - name: MICRO_ADDRESS
-                        value: :50051
+                        value: :8080
                       - name: MICRO_REGISTRY
                         value: mdns
                       - name: UPDATED_AT
-                        value: "Mon 15 Jun 2020 08:42:43 AM BST"
+                        value: "Mon 15 Jun 2020 11:00:47 AM BST"
                   ports:
                       - containerPort: 8080
                         name: cons-port

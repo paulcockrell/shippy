@@ -37,3 +37,17 @@ make docker
 ```
 make deploy
 ```
+
+### Command line call (via micro api)
+```
+curl ingress.local/api/rpc -XPOST -d '{
+  "request": { 
+    "name": "test", 
+    "capacity": 200, 
+    "max_weight": 100000, 
+    "available": true 
+  },
+  "method": "VesselService.Create",
+  "service": "com.foo.service.vessel"
+}' -H 'Content-Type: application/json'
+```
