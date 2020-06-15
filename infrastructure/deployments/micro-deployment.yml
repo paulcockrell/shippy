@@ -14,7 +14,7 @@ spec:
     spec:
         containers:
         - name: micro
-          image: micro/micro
+          image: micro/micro:v2.0.0
           args:
             - "api"
           env:
