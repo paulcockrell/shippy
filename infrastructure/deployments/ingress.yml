@@ -9,7 +9,7 @@ spec:
   - host: ingress.local
     http:
       paths:
-      - path: /
+      - path: /web(/|$)(.*)
         backend:
           serviceName: shippy-ui
           servicePort: 80
